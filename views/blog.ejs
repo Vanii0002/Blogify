@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./partials/head") %>
+    <title>Blog</title>
+    <link rel="stylesheet" href="../public/style.css">
+
+    
+</head>
+<body>
+   <%- include("./partials/nav") %>
+<div class="container mt-4">
+
+  <h1> <%=blog.title %></h1>
+  <img src="<%= blog.coverImage %>" width="700px"/>
+<pre>  <%= blog.body %></pre>
+
+</div>
+   <%- include("./partials/scripts") %>
+
+ </body>
+
+ </html>

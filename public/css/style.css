@@ -1,0 +1,17 @@
+/* Custom card hover animation */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03); 
+  box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
+}
+
+.card-img-top {
+  height: 200px;      
+  object-fit: cover;   
+  border-top-left-radius: 0.5rem; 
+  border-top-right-radius: 0.5rem;
+}
+

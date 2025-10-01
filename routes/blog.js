@@ -22,6 +22,24 @@ blogRouter.get("/add-new",(req,res)=>{
     });
 });
 
+blogRouter.get("/:id", async (req, res) => {
+  try {
+    const blog = await blogModel.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).send("Blog not found");
+    }
+
+    return res.render("blog", {
+      user: req.user,
+      blog,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Server error");
+  }
+});
+
 blogRouter.post("/",upload.single('coverImage'), async(req,res)=>{
     const {title,body}=req.body;
       const blog= await blogModel.create({
@@ -31,7 +49,7 @@ blogRouter.post("/",upload.single('coverImage'), async(req,res)=>{
                 coverImage:`/uploads/${req.file.filename}`
 
 })
-  return res.redirect(`/blogs/${blog._id}`);
+  return res.redirect(`/blog/${blog._id}`);
 });
 
 export default blogRouter;
