@@ -1,3 +1,5 @@
+dotenv.config();
+
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
@@ -7,11 +9,11 @@ import mongoose from 'mongoose';
 import blogModel from "./models/blog.js";
 import cookieParser from "cookie-parser";
 import checkForAuthenticationCookie from "./middleware/authentication.js"
-dotenv.config();
+
 const app=express();
 const port=process.env.PORT;
 
-mongoose.connect("mongodb://127.0.0.1:27017/blogify")
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{console.log("Mongo is connected")})
 .catch((e)=>{console.log("Mongo error")})
 
@@ -34,4 +36,4 @@ app.get("/", async(req,res)=>{
     });
 })
 
-app.listen(port,()=>{console.log("server is connected")})
+app.listen(port,()=>{console.log(`server is connected ${port}`)})

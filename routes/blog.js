@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import blogModel from "../models/blog.js";
+import commentModel from "../models/comments.js";
 const blogRouter=express.Router();
 
 const storage = multer.diskStorage({
@@ -24,8 +25,9 @@ blogRouter.get("/add-new",(req,res)=>{
 
 blogRouter.get("/:id", async (req, res) => {
   try {
-    const blog = await blogModel.findById(req.params.id);
-
+    const blog = await blogModel.findById(req.params.id).populate("createdBy");
+    const comment=await commentModel.find({blogId:req.params.id}).populate("createdBy");
+console.log(comment);
     if (!blog) {
       return res.status(404).send("Blog not found");
     }
@@ -33,12 +35,25 @@ blogRouter.get("/:id", async (req, res) => {
     return res.render("blog", {
       user: req.user,
       blog,
+      comment,
     });
   } catch (error) {
     console.log(error);
     return res.status(500).send("Server error");
   }
 });
+
+blogRouter.post("/comment/:blogId", async(req,res)=>{
+  const comment =await commentModel.create({
+    content:req.body.content,
+    blogId:req.params.blogId,
+    createdBy:req.user._id,
+
+  })
+    console.log("Created comment:", comment);
+
+  return res.redirect(`/blog/${req.params.blogId}`);
+})
 
 blogRouter.post("/",upload.single('coverImage'), async(req,res)=>{
     const {title,body}=req.body;
